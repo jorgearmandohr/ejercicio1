@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MoviesService } from '../../service/movies.service';
+import { MovieInfo } from 'src/app/dtos/movies';
+import { MovieDetail } from 'src/app/dtos/movie-detail';
+
+
 
 @Component({
   selector: 'app-movies',
@@ -7,13 +12,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MoviesComponent implements OnInit {
   movieName: string;
-  constructor() { }
+  movieList: MovieInfo[];
+  movieDetail: MovieDetail;
+  constructor(private moviesService: MoviesService) { }
 
-  ngOnInit() {  
-    // this.movieName = "juan";
+  ngOnInit() {
+
   }
-  search(){
-    alert(this.movieName);
+
+  search() {
+    //alert(this.movieName);
+    this.moviesService.searchMovies(this.movieName).subscribe(response => this.movieList = response.Search);
+  }
+
+  getInfo(id: string) {
+    this.moviesService.getMovieById(id).subscribe(response => this.movieDetail = response);
   }
 
 }
